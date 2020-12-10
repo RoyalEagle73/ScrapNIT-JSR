@@ -17,6 +17,7 @@ class resultLeecher():
             "hfIdno":"",
             "hdfidno":""
         }
+        self.departmentName = ""
 
     def extractRollLimit(self,lastRollNumber):
         for i in range(5,len(lastRollNumber)):
@@ -91,7 +92,9 @@ class resultLeecher():
         self.postData["btnimgShow.x"] = 23
         self.postData["btnimgShow.y"] = 8
         del self.postData["btnimgShowResult.x"]
-        del self.postData["btnimgShowResult.y"] 
+        del self.postData["btnimgShowResult.y"]
+        if(self.departmentName==""):
+            self.departmentName = studentData["departmentName"]
         return studentData
 
     def classData(self,lastRollNumber):
@@ -105,7 +108,7 @@ class resultLeecher():
             data = self.getStudentData(currentRollNumber)
             if data!=-1:
                 classResult[currentRollNumber] = data
-        with open(rollPrefix + ".json", "w") as file:
+        with open( rollPrefix[:5]+ " - " + self.departmentName + ".json", "w") as file:
             json.dump(classResult, file)
 
 if __name__ == "__main__":
