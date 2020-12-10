@@ -40,13 +40,13 @@ BeautifulSoup
 5. JSON File will be downloaded with your Roll Number(Single Student Mode) or with your Department's name(Class Scrapping Mode).
 
 
-### Languge Used
+## Languge Used
 Python3
 
-### Other Project related to Result/Data Scrapping
+## Other Project related to Result/Data Scrapping
 [NIT-JSR-RESULTS-LEECHER](https://github.com/RoyalEagle73/NIT-JSR-Result-Leecher)
 
-### Follow me on
+## Follow me on
 [GitHub](https://Github.com/Royaleagle73)
 
 [Reddit](https://reddit.com/u/royaleagle73)
