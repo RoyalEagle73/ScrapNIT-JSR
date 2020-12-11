@@ -1,7 +1,19 @@
 ![index-removebg-preview(1)](https://user-images.githubusercontent.com/34307370/101792466-bf5adb80-3b2a-11eb-9f72-8452db6b476d.png)
 # ScrapNIT-JSR
 A tool to scrap latest results and student/class information fastly.
+
 **Note :** A faster and less clumpsy version for previous tool [NIT-JSR-RESULTS-LEECHER](https://github.com/RoyalEagle73/NIT-JSR-Result-Leecher).
+
+## Features
+1. Name
+2. Father's Name
+3. College ID
+4. Final Scorecard URL
+5. Department Name
+6. Semester-Wise Result with SGPA
+7. Subject Name, Subject Code, Marks in Subject, Grade in Subject for every subject.
+8. Final CGPA
+9. Result in JSON format for easy readability (Use Firefox for best experience)
 
 ## Requirements
 Python3
@@ -9,6 +21,8 @@ Python3
 Requests
 
 BeautifulSoup
+
+lxml
 
 
 ## Installation
@@ -53,4 +67,4 @@ Python3
 
 [Linkedin](https://www.linkedin.com/in/deepakchauhan878)
 
-⛥ the repo, if it helped you :)
+## ⛥ the repo, if it helped you :)
