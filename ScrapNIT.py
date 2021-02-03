@@ -7,10 +7,13 @@ import sys
 import json
 import requests
 from bs4 import BeautifulSoup
+from configparser import ConfigParser
 
 class resultLeecher():
     def __init__(self):
-        self.url = "http://122.252.250.250/StudentPortal/Default.aspx"
+        self.parser = ConfigParser()
+        self.parser.read('config.ini')
+        self.url = self.parser.get('Connection','url')
         self.departmentName = ""
         self.postData = {
             "ToolkitScriptManager1_HiddenField":"",
@@ -25,6 +28,7 @@ class resultLeecher():
             "hdfidno":""
         }
         self.studentData = {
+            "classRank":-1,
             "rollNo":"",
             "nameOfStudent": "",
             "fathersName":"",
@@ -72,7 +76,8 @@ class resultLeecher():
             self.studentData["result"][str(semester)] = self.getSemesterResult(self.url,semester)
 
     def getStudentData(self,rollNo):
-        self.studentData["rollNo"] = rollNo;
+        self.studentData["fathersName"]=""
+        self.studentData["rollNo"] = rollNo
         self.postData["txtRegno"] = rollNo
         responseData = requests.post(self.url, data=self.postData).text
         soup = BeautifulSoup(responseData,"lxml")
@@ -105,7 +110,7 @@ class resultLeecher():
         return self.studentData
 
     def classData(self,lastRollNumber):
-        classResult = {}
+        classResult = dict()
         rollPrefix = lastRollNumber[ :self.extractRollLimit(lastRollNumber)]
         lastRollNumber = int(lastRollNumber[self.extractRollLimit(lastRollNumber):])
         numOfZeros = len(str(lastRollNumber)) - 1
@@ -114,9 +119,33 @@ class resultLeecher():
             print("Checking result for " + currentRollNumber)
             data = self.getStudentData(currentRollNumber)
             if data!=-1:
-                classResult[currentRollNumber] = data
+                classResult[str(currentRollNumber)] = data.copy()
+        rank_chart_data = self.classRankGenerator(classResult)
+        # Writing Rank Chart
+        with open( "(Rank Chart) " + rollPrefix[:4]+ " - " + self.departmentName + ".csv", "w") as file:
+            file.write(rank_chart_data)
+        # Writing Data roll no wise
         with open( rollPrefix[:4]+ " - " + self.departmentName + ".json", "w") as file:
-            json.dump(classResult, file)
+            json.dump(classResult, file,indent=4)
+        # Writing Data rank wise
+        with open( "(CGPA Sorted) " + rollPrefix[:4]+ " - " + self.departmentName + ".json", "w") as file:
+            classResult ={x:classResult[x] for x in sorted(classResult,key=lambda e: classResult[e]['finalCGPA'], reverse=True)}
+            json.dump(classResult, file,indent=4)
+
+    def classRankGenerator(self,classResult):
+        rank_chart_data = "Class Rank,Roll No,Name,CGPA\n"
+        applied_rank = 0
+        real_rank = 0
+        last_cgpa = 0
+        sorted_keys = sorted(classResult,key=lambda e: classResult[e]['finalCGPA'],reverse=True)
+        for key in sorted_keys:
+            if classResult[key]['finalCGPA'] != last_cgpa:
+                applied_rank = real_rank+1
+                last_cgpa = classResult[key]['finalCGPA']
+            classResult[key]['classRank'] = applied_rank
+            rank_chart_data += ','.join([str(applied_rank),key,classResult[key]['nameOfStudent'],str(classResult[key]['finalCGPA'])])+"\n"
+            real_rank+=1
+        return rank_chart_data
 
 if __name__ == "__main__":
     leecher = resultLeecher()
