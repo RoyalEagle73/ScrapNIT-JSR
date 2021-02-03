@@ -43,16 +43,19 @@ lxml
 
 2. Choose mode you want to try.
 
-3. **Single Student Scrapping :** This scrapes the data for the Roll Number provided. Use the -s flag to change to this mode.
+3. Change/check url for student portal in config.ini file. 
+
+4. **Single Student Scrapping :** This scrapes the data for the Roll Number provided. Use the -s flag to change to this mode.
 
 `python3 scrapNIT.py -s YOUR_ROLL_NUMBER`
 
-4. **Class Scrapping :** This scrapes the data for the whole class for given Roll Number. Use the -c flag to change to this mode.
+5. **Class Scrapping :** This scrapes the data for the whole class for given Roll Number. Use the -c flag to change to this mode.
 
 `python3 scrapNIT.py -c LAST_ROLL_NUMBER_IN_CLASS`
 
 5. JSON File will be downloaded with your Roll Number(Single Student Mode) or with your Department's name(Class Scrapping Mode).
 
+6. A rank chart in CSV will be generated additionally in Department mode.
 
 ## Languge Used
 Python3
